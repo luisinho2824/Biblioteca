@@ -53,3 +53,8 @@ CREATE TABLE estadoLibro (
     idLibro INT,
     FOREIGN KEY (idLibro) REFERENCES libro(idLibro)
 );
+
+insert into usuario (idUsuario, Nombre, Email, Telefono, Direccion) value
+	(123456, 'Ana Coñoetumadre', 'Anita@gmail.com', 555666777, 'Calle Fermin 55');
+    
+Select * from usuario;
