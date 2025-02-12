@@ -1,0 +1,11 @@
+Cómo Subir Cambios en el Futuro
+Cada vez que hagas cambios, sigue estos pasos:
+
+git add .
+git commit -m "Descripción del cambio"
+git push origin main
+
+
+Si tu compañero también sube cambios, antes de hacer un push, descarga las actualizaciones con:
+
+git pull origin main
