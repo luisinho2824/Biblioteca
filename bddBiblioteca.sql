@@ -1,5 +1,3 @@
-create database biblioteca;
-
 use biblioteca;
 
 create table usuario (
@@ -19,6 +17,7 @@ CREATE TABLE libro (
     cantidadPrest INT
 );
 
+
 CREATE TABLE prestamos (
 	idPrestamos INT PRIMARY KEY,
     idUsuario INT,
@@ -29,8 +28,7 @@ CREATE TABLE prestamos (
     FOREIGN KEY (idLibro) REFERENCES libro(idLibro)
 );
 
-drop table prestamos;
-drop table prestamosExpress;
+
 
 CREATE TABLE prestamosExpress (
 	idPrestamosExpress INT PRIMARY KEY,
@@ -54,7 +52,19 @@ CREATE TABLE estadoLibro (
     FOREIGN KEY (idLibro) REFERENCES libro(idLibro)
 );
 
-insert into usuario (idUsuario, Nombre, Email, Telefono, Direccion) value
-	(123456, 'Ana Coñoetumadre', 'Anita@gmail.com', 555666777, 'Calle Fermin 55');
-    
+INSERT INTO usuario (idUsuario, Nombre, Email, Telefono, Direccion) VALUES
+(1, 'Santiago Restrepo', 'santiago.restrepo@email.com', 123456789, 'Calle 45 #12-34'),
+(2, 'Luis Goncalves', 'luis.goncalves@email.com', 987654321, 'Avenida Central 567'),
+(3, 'Ana Martínez', 'ana.martinez@email.com', 314159265, 'Carrera 8 #23-45'),
+(4, 'Carlos Fernández', 'carlos.fernandez@email.com', 271828182, 'Calle 10 #5-67'),
+(5, 'Mariana López', 'mariana.lopez@email.com', 161803399, 'Diagonal 20 #8-90');
+
+INSERT INTO libro (idLibro, titulo, autor, genero, cantidadPrest) VALUES
+(1, 'Cien años de soledad', 'Gabriel García Márquez', 'Novela', 5),
+(2, '1984', 'George Orwell', 'Ciencia Ficción', 3),
+(3, 'El principito', 'Antoine de Saint-Exupéry', 'Fábula', 7),
+(4, 'Don Quijote de la Mancha', 'Miguel de Cervantes', 'Clásico', 2),
+(5, 'Crónica de una muerte anunciada', 'Gabriel García Márquez', 'Novela', 4);
+
+
 Select * from usuario;
