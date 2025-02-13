@@ -64,7 +64,7 @@ INSERT INTO libro (idLibro, titulo, autor, genero, cantidadPrest) VALUES
 (2, '1984', 'George Orwell', 'Ciencia Ficción', 3),
 (3, 'El principito', 'Antoine de Saint-Exupéry', 'Fábula', 7),
 (4, 'Don Quijote de la Mancha', 'Miguel de Cervantes', 'Clásico', 2),
-(5, 'Crónica de una muerte anunciad', 'Gabriel García Márquez', 'Novela', 4);
+(5, 'Crónica de una muerte anunciada', 'Gabriel García Márquez', 'Novela', 4);
 
 Delete from usuario where idUsuario = 123456;
 
