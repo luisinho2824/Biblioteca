@@ -94,10 +94,15 @@ public class Menu extends JFrame {
         prueba.setFont(new Font("Tahoma", Font.BOLD, 14));
         prueba.setBounds(51, 89, 111, 22);
         contentPane.add(prueba);
+        String idbdd = AlmacenVariables.getInstance().getIdUsuario();
         try (Connection con = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-   	         PreparedStatement pst = con.prepareStatement("SELECT idUsuario, nombre FROM usuario WHERE idUsuario = ?")) {
-        	
-        }
-        
+   	         PreparedStatement pst = con.prepareStatement("SELECT nombre FROM usuario WHERE idUsuario = ?")) {
+        		pst.setString(1, idbdd);
+        		ResultSet rs = pst.executeQuery();
+        		rs.next();
+        		prueba.setText(rs.getString("nombre"));
+        } catch (Exception e) {
+	        JOptionPane.showMessageDialog(this, "Error al verificar ID: " + e.getMessage());
+	    }
     }
 }

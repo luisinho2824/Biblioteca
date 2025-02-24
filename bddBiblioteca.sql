@@ -17,6 +17,8 @@ CREATE TABLE libro (
     cantidadPrest INT
 );
 
+ALTER TABLE libro MODIFY titulo VARCHAR(150);
+
 
 CREATE TABLE prestamos (
 	idPrestamos INT PRIMARY KEY,
@@ -59,6 +61,7 @@ INSERT INTO usuario (idUsuario, Nombre, Email, Telefono, Direccion) VALUES
 (4, 'Carlos Fernández', 'carlos.fernandez@email.com', 271828182, 'Calle 10 #5-67'),
 (5, 'Mariana López', 'mariana.lopez@email.com', 161803399, 'Diagonal 20 #8-90');
 
+
 INSERT INTO libro (idLibro, titulo, autor, genero, cantidadPrest) VALUES
 (1, 'Cien años de soledad', 'Gabriel García Márquez', 'Novela', 5),
 (2, '1984', 'George Orwell', 'Ciencia Ficción', 3),
@@ -66,6 +69,6 @@ INSERT INTO libro (idLibro, titulo, autor, genero, cantidadPrest) VALUES
 (4, 'Don Quijote de la Mancha', 'Miguel de Cervantes', 'Clásico', 2),
 (5, 'Crónica de una muerte anunciada', 'Gabriel García Márquez', 'Novela', 4);
 
-Delete from usuario where idUsuario = 123456;
+Delete from libro where idLibro = 5;
 
 Select * from usuario;
