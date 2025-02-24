@@ -1,121 +1,132 @@
+
 package Biblioteca;
 
 import java.awt.EventQueue;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 
 public class Principal extends JFrame {
-
-    private static final long serialVersionUID = 1L;
-    private JPanel contentPane;
-    private JList<String> listaUsuarios;
-    private DefaultListModel<String> modeloUsuarios;
-    
-    private JList<String> listaLibros;
-    private DefaultListModel<String> modeloLibros;
-
-    private static final String URL = "jdbc:mysql://localhost:3307/biblioteca";
+	
+	private static final String URL = "jdbc:mysql://localhost:3307/biblioteca";
     private static final String USUARIO = "root";
     private static final String PASSWORD = "root";
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Principal frame = new Principal();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField idtx;
 
-    public Principal() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 400, 537);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Principal frame = new Principal();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
+	/**
+	 * Create the frame.
+	 */
+	public Principal() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 350, 200);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        JButton verUsuarios = new JButton("Ver");
-        verUsuarios.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cargarUsuarios();
-            }
-        });
-        verUsuarios.setFont(new Font("Tahoma", Font.BOLD, 16));
-        verUsuarios.setBounds(10, 102, 96, 59);
-        contentPane.add(verUsuarios);
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("BIENVENIDO");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel.setBounds(10, 11, 316, 14);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Ingresa tu Id: ");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_1.setBounds(10, 55, 150, 19);
+		contentPane.add(lblNewLabel_1);
+		
+		idtx = new JTextField();
+		idtx.setBounds(230, 56, 96, 20);
+		contentPane.add(idtx);
+		idtx.setColumns(10);
+		
+		JButton ingresarbt = new JButton("Ingresar");
+		ingresarbt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				verificar();
+				
+			}
+		});
+		ingresarbt.setFont(new Font("Tahoma", Font.BOLD, 12));
+		ingresarbt.setBounds(200, 100, 89, 52);
+		contentPane.add(ingresarbt);
+		
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnSalir.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnSalir.setBounds(50, 100, 89, 52);
+		contentPane.add(btnSalir);
+	}
+	
+	private void verificar(){
+	    String idIngresado = idtx.getText(); // Capturar el ID ingresado
 
-        JButton verLibros = new JButton("Ver");
-        verLibros.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cargarLibros();
-            }
-        });
-        verLibros.setFont(new Font("Tahoma", Font.BOLD, 16));
-        verLibros.setBounds(10, 331, 96, 59);
-        contentPane.add(verLibros);
+	    if (idIngresado.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Por favor, ingresa un ID.");
+	        return;
+	    }
 
-        modeloUsuarios = new DefaultListModel<>();
-        listaUsuarios = new JList<>(modeloUsuarios);
-        JScrollPane scrollUsuarios = new JScrollPane(listaUsuarios);
-        scrollUsuarios.setBounds(155, 44, 177, 179);
-        contentPane.add(scrollUsuarios);
+	    try (Connection con = DriverManager.getConnection(URL, USUARIO, PASSWORD);
+	         PreparedStatement pst = con.prepareStatement("SELECT idUsuario, nombre FROM usuario WHERE idUsuario = ?")) {
+	        
+	        pst.setString(1, idIngresado); // Usar el ID ingresado por el usuario
+	        ResultSet rs = pst.executeQuery();
 
-        modeloLibros = new DefaultListModel<>();
-        listaLibros = new JList<>(modeloLibros);
-        JScrollPane scrollLibros = new JScrollPane(listaLibros);
-        scrollLibros.setBounds(155, 268, 177, 179);
-        contentPane.add(scrollLibros);
+	        if (rs.next()) {
+	            String idbdd = rs.getString("idUsuario");
+	            String nombreuser = rs.getString("nombre");
+	            
+	            JOptionPane.showMessageDialog(this, "ID encontrado, hola " + nombreuser);
+	            AlmacenVariables.getInstance().setIdUsuario(idbdd);
+	            
+	            // Abrir el menú solo si el ID es válido
+	            Menu window1 = new Menu();
+	            window1.setVisible(true);
+	            dispose();
+	        } else {
+	            JOptionPane.showMessageDialog(this, "ID no encontrado. Intenta de nuevo.");
+	        }
 
-        JLabel lblUsuarios = new JLabel("Usuarios");
-        lblUsuarios.setFont(new Font("Tahoma", Font.BOLD, 16));
-        lblUsuarios.setBounds(155, 11, 108, 22);
-        contentPane.add(lblUsuarios);
-
-        JLabel lblLibros = new JLabel("Libros");
-        lblLibros.setFont(new Font("Tahoma", Font.BOLD, 16));
-        lblLibros.setBounds(155, 235, 108, 22);
-        contentPane.add(lblLibros);
-    }
-
-    private void cargarUsuarios() {
-        modeloUsuarios.clear();
-        try (Connection con = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-             PreparedStatement pst = con.prepareStatement("SELECT nombre FROM usuario");
-             ResultSet rs = pst.executeQuery()) {
-
-            while (rs.next()) {
-                modeloUsuarios.addElement(rs.getString("nombre"));
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar usuarios: " + e.getMessage());
-        }
-    }
-
-
-    private void cargarLibros() {
-        modeloLibros.clear();
-        try (Connection con = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-             PreparedStatement pst = con.prepareStatement("SELECT titulo FROM libro");
-             ResultSet rs = pst.executeQuery()) {
-
-            while (rs.next()) {
-                modeloLibros.addElement(rs.getString("titulo"));
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar libros: " + e.getMessage());
-        }
-    }
+	    } catch (Exception e) {
+	        JOptionPane.showMessageDialog(this, "Error al verificar ID: " + e.getMessage());
+	    }
+	}
 }
