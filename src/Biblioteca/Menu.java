@@ -91,16 +91,32 @@ public class Menu extends JFrame {
         contentPane.add(btnNewButton);
         
         JLabel prueba = new JLabel("New label");
+        prueba.setHorizontalAlignment(SwingConstants.RIGHT);
         prueba.setFont(new Font("Tahoma", Font.BOLD, 14));
-        prueba.setBounds(51, 89, 111, 22);
+        prueba.setBounds(10, 11, 466, 22);
         contentPane.add(prueba);
         String idbdd = AlmacenVariables.getInstance().getIdUsuario();
         try (Connection con = DriverManager.getConnection(URL, USUARIO, PASSWORD);
-   	         PreparedStatement pst = con.prepareStatement("SELECT nombre FROM usuario WHERE idUsuario = ?")) {
+   	         PreparedStatement pst = con.prepareStatement("SELECT nombre, Rol FROM usuario WHERE idUsuario = ?")) {
         		pst.setString(1, idbdd);
         		ResultSet rs = pst.executeQuery();
-        		rs.next();
-        		prueba.setText(rs.getString("nombre"));
+        		if (rs.next()) {
+        	        // Obtener nombre y rol por separado
+        	        String nombre = rs.getString("nombre");
+        	        String rol = rs.getString("Rol");
+        	        String rol2 = "";
+        	        if (rol.equals("1")) {
+        	        	rol2 = "Admin";
+        	        }else {
+        	        	rol2 = "User";
+        	        }
+        	        
+        	        // Establecer el texto en el JLabel
+        	        prueba.setText(nombre + " - " + rol2);
+        	    } else {
+        	        // Si no se encuentra el usuario
+        	        prueba.setText("Usuario no encontrado");
+        	    }
         } catch (Exception e) {
 	        JOptionPane.showMessageDialog(this, "Error al verificar ID: " + e.getMessage());
 	    }

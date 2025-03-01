@@ -18,6 +18,7 @@ CREATE TABLE libro (
 );
 
 ALTER TABLE libro MODIFY titulo VARCHAR(150);
+ALTER TABLE libro ADD cantidadLib INT;
 
 
 CREATE TABLE prestamos (
@@ -69,6 +70,13 @@ INSERT INTO libro (idLibro, titulo, autor, genero, cantidadPrest) VALUES
 (4, 'Don Quijote de la Mancha', 'Miguel de Cervantes', 'Clásico', 2),
 (5, 'Crónica de una muerte anunciada', 'Gabriel García Márquez', 'Novela', 4);
 
+
 Delete from libro where idLibro = 5;
 
 Select * from usuario;
+
+# true/1 = Administrador false/0 = Usuario
+
+UPDATE libro 
+SET idLibro = 12345
+WHERE idLibro = 2;
